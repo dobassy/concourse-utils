@@ -1,0 +1,30 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    repository: ubuntu
+
+inputs:
+- name: ci-utils
+- name: release
+
+outputs:
+- name: assets
+
+params:
+  ISSUE_COMPONENT:
+
+run:
+  path: bash
+  args:
+  - -c
+  - |
+    set -e
+    shopt -s dotglob
+    CONTENT_FILE=assets/message
+    touch $CONTENT_FILE
+    NEW_VERSION=$(cat release/version)
+    echo "New release $ISSUE_COMPONENT $NEW_VERSION" >> $CONTENT_FILE
+    echo "some body ..." >> $CONTENT_FILE
